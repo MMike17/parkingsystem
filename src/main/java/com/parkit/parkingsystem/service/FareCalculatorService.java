@@ -37,8 +37,6 @@ public class FareCalculatorService {
 		int fareConversion = (int) (fare * 100);
 		BigDecimal computedFare = new BigDecimal(Integer.toString(fareConversion));
 		computedFare = computedFare.divide(new BigDecimal("100.00"));
-		
-		System.out.println("fare : "+fare+" / fareConversion : "+fareConversion+" / final cost : "+computedFare.doubleValue());
 
 		return computedFare.doubleValue();
 	}
