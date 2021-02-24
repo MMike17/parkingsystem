@@ -10,6 +10,7 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
+
+import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
@@ -43,14 +46,25 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
+		System.out.println("Setting up new test");
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
     }
 
+	@AfterEach
+	private void closeTest()
+	{
+		System.out.println("Cleaning after end of test");
+		// closes ticket in database
+		Ticket ticket = getTicketWithRegistrationNumber();
+		ticket.setOutTime(new Date());
+		ticketDAO.updateTicket(ticket);
+	}
+
     @AfterAll
     private static void tearDown(){
-
+		
     }
 
     @Test
@@ -75,7 +89,25 @@ public class ParkingDataBaseIT {
 	{
 		// GIVEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-		parkingService.processIncomingVehicle(); // set car parking in database
+		
+		// inserts test ticket in database
+		Ticket testTicket = new Ticket();
+		testTicket.setParkingSpot(parkingService.getNextParkingNumberIfAvailable());
+
+		try
+		{
+			testTicket.setVehicleRegNumber(inputReaderUtil.readVehicleRegistrationNumber());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+
+		Date insertedInTime = new Date();
+		insertedInTime.setTime(System.currentTimeMillis() - (1000 * 60 * 60));
+		testTicket.setInTime(insertedInTime);
+		
+		ticketDAO.saveTicket(testTicket);
 
 		// WHEN
 		parkingService.processExitingVehicle();
@@ -83,13 +115,15 @@ public class ParkingDataBaseIT {
 		// THEN
 		Ticket ticket = getTicketWithRegistrationNumber();
 
+		System.out.println(ticket.getOutTime());
+
 		assertNotEquals(ticket.getOutTime(), null);
 
 		if(hasMinimumFare(ticket))
 			assertNotEquals(ticket.getPrice(), 0);
 	}
 
-	Ticket getTicketWithRegistrationNumber()
+	static Ticket getTicketWithRegistrationNumber()
 	{
 		Ticket ticket = null;
 		String regNumber = new String();
