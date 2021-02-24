@@ -51,7 +51,37 @@ public class ParkingSpotDAOTest
 	@Test
 	public void testNextAvailableParkingSpotForCar()
 	{
-		// public int getNextAvailableSlot(ParkingType parkingType)
+		// GIVEN
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		DataBaseConfig dbConfig = new DataBaseTestConfig();
+
+		try
+		{
+			Connection connexion = dbConfig.getConnection();
+			PreparedStatement statement = connexion.prepareStatement("select * from parking where AVAILABLE = true and TYPE = ?");
+			statement.setString(1, ParkingType.CAR.toString());
+			ResultSet results = statement.executeQuery();
+
+			while (results.next())
+				indexes.add(results.getInt("PARKING_NUMBER"));
+
+			dbConfig.closeResultSet(results);
+			dbConfig.closePreparedStatement(statement);
+		}
+		catch (SQLException e)
+		{
+			fail(e);
+		}
+		catch (ClassNotFoundException e)
+		{
+			fail(e);
+		}
+
+		// WHEN
+		Integer selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+
+		// THEN
+		assertEquals(selectedParkingSpot, indexes.get(0));
 	}
 
 	/**
