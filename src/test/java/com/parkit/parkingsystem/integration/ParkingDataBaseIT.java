@@ -53,7 +53,8 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingACar(){
+    public void testParkingACar()
+	{
 		// GIVEN
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
@@ -62,6 +63,30 @@ public class ParkingDataBaseIT {
         parkingService.processIncomingVehicle();
 
 		// THEN
+		Ticket ticket = getTicketWithRegistrationNumber();
+
+		int parkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+		assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
+    }
+
+    @Test
+	public void testParkingLotExit()
+	{
+		// GIVEN
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		when(inputReaderUtil.readSelection()).thenReturn(1);
+		parkingService.processIncomingVehicle(); // set car parking in database
+
+		// WHEN
+		parkingService.processExitingVehicle();
+
+		// TODO: check that the fare generated and out time are populated correctly in the database
+
+		// THEN
+	}
+
+	Ticket getTicketWithRegistrationNumber()
+	{
 		Ticket ticket = null;
 		String regNumber = new String();
 
@@ -73,24 +98,12 @@ public class ParkingDataBaseIT {
 		{
 			System.out.println(e);
 		}
-		
+
 		ticket = ticketDAO.getTicket(regNumber);
 
-		if(ticket == null)
+		if (ticket == null)
 			fail("Couldn't retrieve ticket from DB");
-		else
-		{
-			int parkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
-			assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
-		}
-    }
 
-    @Test
-    public void testParkingLotExit(){
-        testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processExitingVehicle();
-        //TODO: check that the fare generated and out time are populated correctly in the database
-    }
-
+		return ticket;
+	}
 }
