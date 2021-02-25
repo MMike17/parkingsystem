@@ -52,7 +52,7 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForCar()
 	{
 		// GIVEN
-		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", "PARKING_NUMBER");
+		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", ParkingType.CAR, "PARKING_NUMBER");
 
 		if (extractedData.size() < 0)
 			fail("Retrieved data is empty");
@@ -73,7 +73,17 @@ public class ParkingSpotDAOTest
 	@Test
 	public void testNextAvailableParkingSpotForBike()
 	{
-		// public int getNextAvailableSlot(ParkingType parkingType)
+		// GIVEN
+		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", ParkingType.BIKE, "PARKING_NUMBER");
+
+		if (extractedData.size() < 0)
+			fail("Retrieved data is empty");
+
+		// WHEN
+		Integer selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
+
+		// THEN
+		assertEquals(selectedParkingSpot.toString(), extractedData.get(0));
 	}
 
 	/**
@@ -100,7 +110,7 @@ public class ParkingSpotDAOTest
 		// public boolean updateParking(ParkingSpot parkingSpot)
 	}
 
-	ArrayList<String> getDataFromDataBase(String command, String columnName)
+	ArrayList<String> getDataFromDataBase(String command, ParkingType type, String columnName)
 	{
 		ArrayList<String> results = new ArrayList<String>();
 		DataBaseConfig dbConfig = new DataBaseTestConfig();
@@ -109,7 +119,7 @@ public class ParkingSpotDAOTest
 		{
 			Connection connexion = dbConfig.getConnection();
 			PreparedStatement statement = connexion.prepareStatement(command);
-			statement.setString(1, ParkingType.CAR.toString());
+			statement.setString(1, type.toString());
 			ResultSet retrievedResults = statement.executeQuery();
 
 			while (retrievedResults.next())
