@@ -52,36 +52,16 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForCar()
 	{
 		// GIVEN
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
-		DataBaseConfig dbConfig = new DataBaseTestConfig();
+		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", "PARKING_NUMBER");
 
-		try
-		{
-			Connection connexion = dbConfig.getConnection();
-			PreparedStatement statement = connexion.prepareStatement("select * from parking where AVAILABLE = true and TYPE = ?");
-			statement.setString(1, ParkingType.CAR.toString());
-			ResultSet results = statement.executeQuery();
-
-			while (results.next())
-				indexes.add(results.getInt("PARKING_NUMBER"));
-
-			dbConfig.closeResultSet(results);
-			dbConfig.closePreparedStatement(statement);
-		}
-		catch (SQLException e)
-		{
-			fail(e);
-		}
-		catch (ClassNotFoundException e)
-		{
-			fail(e);
-		}
+		if (extractedData.size() < 0)
+			fail("Retrieved data is empty");
 
 		// WHEN
 		Integer selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
 
 		// THEN
-		assertEquals(selectedParkingSpot, indexes.get(0));
+		assertEquals(selectedParkingSpot.toString(), extractedData.get(0));
 	}
 
 	/**
@@ -118,5 +98,35 @@ public class ParkingSpotDAOTest
 	public void testParkingUpdateForBike()
 	{
 		// public boolean updateParking(ParkingSpot parkingSpot)
+	}
+
+	ArrayList<String> getDataFromDataBase(String command, String columnName)
+	{
+		ArrayList<String> results = new ArrayList<String>();
+		DataBaseConfig dbConfig = new DataBaseTestConfig();
+
+		try
+		{
+			Connection connexion = dbConfig.getConnection();
+			PreparedStatement statement = connexion.prepareStatement(command);
+			statement.setString(1, ParkingType.CAR.toString());
+			ResultSet retrievedResults = statement.executeQuery();
+
+			while (retrievedResults.next())
+				results.add(retrievedResults.getString(columnName));
+
+			dbConfig.closeResultSet(retrievedResults);
+			dbConfig.closePreparedStatement(statement);
+		}
+		catch (SQLException e)
+		{
+			fail(e);
+		}
+		catch (ClassNotFoundException e)
+		{
+			fail(e);
+		}
+
+		return results;
 	}
 }
