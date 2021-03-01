@@ -3,16 +3,10 @@ package com.parkit.parkingsystem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
-import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
+import com.parkit.parkingsystem.model.ParkingSpot;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +33,7 @@ public class ParkingSpotDAOTest
 	@BeforeEach
 	public void setupPerTest()
 	{
-		dataBasePrepareService.clearDataBaseEntries();
+		// dataBasePrepareService.clearDataBaseEntries();
 	}
 
 	/**
@@ -52,16 +46,12 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForCar()
 	{
 		// GIVEN
-		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", ParkingType.CAR, "PARKING_NUMBER");
-
-		if (extractedData.size() < 0)
-			fail("Retrieved data is empty");
 
 		// WHEN
-		Integer selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+		int selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
 
 		// THEN
-		assertEquals(selectedParkingSpot.toString(), extractedData.get(0));
+		assertEquals(selectedParkingSpot, 1);
 	}
 
 	/**
@@ -74,69 +64,32 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForBike()
 	{
 		// GIVEN
-		ArrayList<String> extractedData = getDataFromDataBase("select * from parking where AVAILABLE = true and TYPE = ?", ParkingType.BIKE, "PARKING_NUMBER");
-
-		if (extractedData.size() < 0)
-			fail("Retrieved data is empty");
 
 		// WHEN
-		Integer selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
+		int selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
 
 		// THEN
-		assertEquals(selectedParkingSpot.toString(), extractedData.get(0));
+		assertEquals(selectedParkingSpot, 4);
 	}
 
 	/**
-	 * Tests ParkingSpotDAO.updateParking for ParkingType.CAR
+	 * Tests ParkingSpotDAO.updateParking
 	 * 
 	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
-	 * @see com.parkit.parkingsystem.constants.ParkingType
 	 */
 	@Test
 	public void testParkingUpdateForCar()
 	{
-		// public boolean updateParking(ParkingSpot parkingSpot)
-	}
+		// GIVEN
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
-	/**
-	 * Tests ParkingSpotDAO.updateParking for ParkingType.BIKE
-	 * 
-	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
-	 * @see com.parkit.parkingsystem.constants.ParkingType
-	 */
-	@Test
-	public void testParkingUpdateForBike()
-	{
-		// public boolean updateParking(ParkingSpot parkingSpot)
-	}
+		// WHEN
+		boolean updateSucceeded = parkingSpotDAO.updateParking(parkingSpot);
 
-	ArrayList<String> getDataFromDataBase(String command, ParkingType type, String columnName)
-	{
-		ArrayList<String> results = new ArrayList<String>();
-		DataBaseConfig dbConfig = new DataBaseTestConfig();
-
-		try
-		{
-			Connection connexion = dbConfig.getConnection();
-			PreparedStatement statement = connexion.prepareStatement(command);
-			statement.setString(1, type.toString());
-			ResultSet retrievedResults = statement.executeQuery();
-
-			while (retrievedResults.next())
-				results.add(retrievedResults.getString(columnName));
-
-			dbConfig.closeResultSet(retrievedResults);
-			dbConfig.closePreparedStatement(statement);
-		}
-		catch (SQLException e)
-		{
-			fail(e);
-		}
-		catch (ClassNotFoundException e)
-		{
-			fail(e);
-		}
-
-		return results;
+		// THEN
+		if (updateSucceeded)
+			assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR), parkingSpot.getId() + 1);
+		else
+			fail("Failed to update ticket");
 	}
 }
