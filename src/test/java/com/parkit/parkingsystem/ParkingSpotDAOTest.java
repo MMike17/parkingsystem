@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
 import com.parkit.parkingsystem.model.ParkingSpot;
 
@@ -20,20 +21,20 @@ import org.junit.jupiter.api.Test;
  */
 public class ParkingSpotDAOTest
 {
-	static ParkingSpotDAO parkingSpotDAO;
-	static DataBasePrepareService dataBasePrepareService;
+	static DataBaseTestConfig testDataBase = new DataBaseTestConfig();
+	static ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	static DataBasePrepareService dataBasePrepareService = new DataBasePrepareService();
 
 	@BeforeAll
 	public static void setupTests()
 	{
-		parkingSpotDAO = new ParkingSpotDAO();
-		dataBasePrepareService = new DataBasePrepareService();
+		parkingSpotDAO.dataBaseConfig = testDataBase;
 	}
 
 	@BeforeEach
 	public void setupPerTest()
 	{
-		// dataBasePrepareService.clearDataBaseEntries();
+		dataBasePrepareService.clearDataBaseEntries();
 	}
 
 	/**
@@ -46,12 +47,13 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForCar()
 	{
 		// GIVEN
+		final int expectedParkingSpot = 1;
 
 		// WHEN
 		int selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
 
 		// THEN
-		assertEquals(selectedParkingSpot, 1);
+		assertEquals(expectedParkingSpot, selectedParkingSpot);
 	}
 
 	/**
@@ -64,16 +66,17 @@ public class ParkingSpotDAOTest
 	public void testNextAvailableParkingSpotForBike()
 	{
 		// GIVEN
+		final int expectedParkingSpot = 4;
 
 		// WHEN
 		int selectedParkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
 
 		// THEN
-		assertEquals(selectedParkingSpot, 4);
+		assertEquals(expectedParkingSpot, selectedParkingSpot);
 	}
 
 	/**
-	 * Tests ParkingSpotDAO.updateParking
+	 * Tests ParkingSpotDAO.updateParking for cars
 	 * 
 	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
 	 */
@@ -89,6 +92,27 @@ public class ParkingSpotDAOTest
 		// THEN
 		if (updateSucceeded)
 			assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR), parkingSpot.getId() + 1);
+		else
+			fail("Failed to update ticket");
+	}
+
+	/**
+	 * Tests ParkingSpotDAO.updateParking for bikes
+	 * 
+	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
+	 */
+	@Test
+	public void testParkingUpdateForBike()
+	{
+		// GIVEN
+		ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
+
+		// WHEN
+		boolean updateSucceeded = parkingSpotDAO.updateParking(parkingSpot);
+
+		// THEN
+		if (updateSucceeded)
+			assertEquals(parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE), parkingSpot.getId() + 1);
 		else
 			fail("Failed to update ticket");
 	}
