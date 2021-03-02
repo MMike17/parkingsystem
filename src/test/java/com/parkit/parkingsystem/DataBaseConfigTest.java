@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
@@ -103,6 +104,51 @@ public class DataBaseConfigTest
 		try
 		{
 			assertEquals(expectedConnectionClosedState, testConnection.isClosed());
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Test DataBaseConfig.closePreparedStatement()
+	 * 
+	 * @see com.parkit.parkingsystem.config.DataBaseConfig#closePreparedStatement(java.sql.PreparedStatement)
+	 * @see java.sql.PreparedStatement
+	 */
+	@Test
+	public void testClosePreparedStatement()
+	{
+		// What do we test ?
+		// whether the prepared statement is closed
+
+		// GIVEN
+		Connection testConnection = null;
+		PreparedStatement testStatement = null;
+		boolean expectedStatementCloseState = true;
+
+		try
+		{
+			testConnection = dataBaseConfig.getConnection();
+			testStatement = testConnection.prepareStatement("SELECT 1");
+		}
+		catch (ClassNotFoundException e)
+		{
+			System.out.println(e);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+
+		// WHEN
+		dataBaseConfig.closePreparedStatement(testStatement);
+
+		// THEN
+		try
+		{
+			assertEquals(expectedStatementCloseState, testStatement.isClosed());
 		}
 		catch (SQLException e)
 		{
