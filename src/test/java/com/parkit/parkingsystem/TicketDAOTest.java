@@ -2,6 +2,7 @@ package com.parkit.parkingsystem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,7 +102,7 @@ public class TicketDAOTest
 		// if we get ticket
 
 		// GIVEN
-		String testVehicleRegNumber = "SAVETEST";
+		String testVehicleRegNumber = "GETTEST";
 		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
 		testTicketDAO.saveTicket(testTicket);
 
@@ -113,20 +114,44 @@ public class TicketDAOTest
 		assertEquals(testVehicleRegNumber, retrievedTicket.getVehicleRegNumber());
 	}
 
+	/**
+	 * Tests TicketDAO.updateTicket
+	 * 
+	 * @see com.parkit.parkingsystem.dao.TicketDAO#updateTicket(com.parkit.parkingsystem.model.Ticket)
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
+	@Test
+	public void testUpdateTicket()
+	{
+		// GIVEN
+		String testVehicleRegNumber = "UPDTTEST";
+		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
+		testTicketDAO.saveTicket(testTicket);
+
+		// update index
+		testTicket = testTicketDAO.getTicket(testVehicleRegNumber);
+		testTicket.setPrice(10);
+		testTicket.setOutTime(new Date());
+
+		// WHEN
+		boolean completedQuerry = testTicketDAO.updateTicket(testTicket);
+
+		// THEN
+		if (!completedQuerry)
+			fail("Failed ticket update");
+
+		assertEquals(testTicketDAO.getTicket(testVehicleRegNumber).getPrice(), testTicket.getPrice());
+	}
+
 	Ticket generateTestTicket(String vehicleRegNumber)
 	{
 		Ticket testTicket = new Ticket();
-		testTicket.setId(1);
 		testTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
 		testTicket.setVehicleRegNumber(vehicleRegNumber);
 		testTicket.setPrice(0);
-		testTicket.setInTime(new Date());
+		testTicket.setInTime(new Date(new Date().getTime() - 10 * 1000 * 60));
 		testTicket.setOutTime(null);
 
 		return testTicket;
 	}
-
-	// what methods do we need to test ?
-
-	// boolean updateTicket(Ticket ticket)
 }
