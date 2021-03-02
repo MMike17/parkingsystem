@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,7 +52,7 @@ public class TicketDAOTest
 	}
 
 	/**
-	 * Tests TicketDAO.saveTicket()
+	 * Tests TicketDAO.saveTicket
 	 * 
 	 * @see com.parkit.parkingsystem.dao.TicketDAO#saveTicket(com.parkit.parkingsystem.model.Ticket)
 	 * @see com.parkit.parkingsystem.model.Ticket
@@ -61,13 +62,7 @@ public class TicketDAOTest
 	{
 		// GIVEN
 		String testVehicleRegNumber = "SAVETEST";
-		Ticket testTicket = new Ticket();
-		testTicket.setId(1);
-		testTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-		testTicket.setVehicleRegNumber(testVehicleRegNumber);
-		testTicket.setPrice(0);
-		testTicket.setInTime(new Date());
-		testTicket.setOutTime(null);
+		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
 		boolean expectedRowState = true;
 
 		// WHEN
@@ -93,8 +88,45 @@ public class TicketDAOTest
 		}
 	}
 
+	/**
+	 * Tests TicketDAO.getTicket
+	 * 
+	 * @see com.parkit.parkingsystem.dao.TicketDAO#getTicket(String)
+	 * @see com.parkit.parkingsystem.model.Ticket#getVehicleRegNumber()
+	 */
+	@Test
+	public void testGetTicket()
+	{
+		// what should we check ?
+		// if we get ticket
+
+		// GIVEN
+		String testVehicleRegNumber = "SAVETEST";
+		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
+		testTicketDAO.saveTicket(testTicket);
+
+		// WHEN
+		Ticket retrievedTicket = testTicketDAO.getTicket(testVehicleRegNumber);
+
+		// THEN
+		assertNotEquals(null, retrievedTicket);
+		assertEquals(testVehicleRegNumber, retrievedTicket.getVehicleRegNumber());
+	}
+
+	Ticket generateTestTicket(String vehicleRegNumber)
+	{
+		Ticket testTicket = new Ticket();
+		testTicket.setId(1);
+		testTicket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
+		testTicket.setVehicleRegNumber(vehicleRegNumber);
+		testTicket.setPrice(0);
+		testTicket.setInTime(new Date());
+		testTicket.setOutTime(null);
+
+		return testTicket;
+	}
+
 	// what methods do we need to test ?
 
-	// Ticket getTicket(String vehicleRegNumber)
 	// boolean updateTicket(Ticket ticket)
 }
