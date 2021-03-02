@@ -66,4 +66,47 @@ public class DataBaseConfigTest
 			System.out.println(e);
 		}
 	}
+
+	/**
+	 * Tests DataBaseConfig.closeConnection()
+	 * 
+	 * @see com.parkit.parkingsystem.config.DataBaseConfig#closeConnection(java.sql.Connection)
+	 * @see java.sql.Connection
+	 */
+	@Test
+	public void testCloseConnection()
+	{
+		// GIVEN
+		boolean expectedConnectionClosedState = true;
+		Connection testConnection = null;
+
+		try
+		{
+			testConnection = dataBaseConfig.getConnection();
+		}
+		catch (ClassNotFoundException e)
+		{
+			System.out.println(e);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+
+		if (testConnection == null)
+			fail("Couldn't retrieve connection to start test");
+
+		// WHEN
+		dataBaseConfig.closeConnection(testConnection);
+
+		// THEN
+		try
+		{
+			assertEquals(expectedConnectionClosedState, testConnection.isClosed());
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
 }
