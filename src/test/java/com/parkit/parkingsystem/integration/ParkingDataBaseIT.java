@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.integration;
 
-import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -118,9 +117,7 @@ public class ParkingDataBaseIT {
 		System.out.println(ticket.getOutTime());
 
 		assertNotEquals(ticket.getOutTime(), null);
-
-		if(hasMinimumFare(ticket))
-			assertNotEquals(ticket.getPrice(), 0);
+		assertNotEquals(ticket.getPrice(), 0);
 	}
 
 	static Ticket getTicketWithRegistrationNumber()
@@ -143,26 +140,5 @@ public class ParkingDataBaseIT {
 			fail("Couldn't retrieve ticket from DB");
 
 		return ticket;
-	}
-
-	boolean hasMinimumFare(Ticket ticket)
-	{
-		double parkingRate = 0;
-
-		switch (ticket.getParkingSpot().getParkingType())
-		{
-			case CAR:
-				parkingRate = Fare.CAR_RATE_PER_HOUR;
-				break;
-			case BIKE:
-				parkingRate = Fare.BIKE_RATE_PER_HOUR;
-				break;
-		}
-
-		// hours =(*60)> minutes =(*60)> seconds =(*1000)> miliseconds
-		double minTime = (1 * 60 * 60 * 1000) / (parkingRate / 0.01);
-		double parkingDuration = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
-
-		return parkingDuration > minTime;
 	}
 }
