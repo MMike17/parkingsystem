@@ -98,9 +98,6 @@ public class TicketDAOTest
 	@Test
 	public void testGetTicket()
 	{
-		// what should we check ?
-		// if we get ticket
-
 		// GIVEN
 		String testVehicleRegNumber = "GETTEST";
 		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
