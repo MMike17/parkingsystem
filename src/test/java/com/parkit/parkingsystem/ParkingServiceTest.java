@@ -59,6 +59,17 @@ public class ParkingServiceTest {
     }
 
 	@Test
+	public void getNextParkingNumberIfAvailableTest()
+	{
+		// GIVEN
+		// WHEN
+		parkingService.getNextParkingNumberIfAvailable();
+
+		// THEN
+		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(any(ParkingType.class));
+	}
+
+	@Test
 	public void processIncomingVehicleTest()
 	{
 		// GIVEN
