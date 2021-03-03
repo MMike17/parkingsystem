@@ -45,7 +45,6 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-		System.out.println("Setting up new test");
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
@@ -54,7 +53,6 @@ public class ParkingDataBaseIT {
 	@AfterEach
 	private void closeTest()
 	{
-		System.out.println("Cleaning after end of test");
 		// closes ticket in database
 		Ticket ticket = getTicketWithRegistrationNumber();
 		ticket.setOutTime(new Date());
@@ -113,8 +111,6 @@ public class ParkingDataBaseIT {
 
 		// THEN
 		Ticket ticket = getTicketWithRegistrationNumber();
-
-		System.out.println(ticket.getOutTime());
 
 		assertNotEquals(ticket.getOutTime(), null);
 		assertNotEquals(ticket.getPrice(), 0);
