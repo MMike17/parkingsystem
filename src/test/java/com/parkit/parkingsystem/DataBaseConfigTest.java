@@ -62,6 +62,7 @@ public class DataBaseConfigTest
 			DatabaseMetaData metaData = testConnection.getMetaData();
 
 			assertEquals(expectedDatabaseUrl, metaData.getURL());
+			testConnection.close();
 		}
 		catch (SQLException e)
 		{
@@ -105,6 +106,7 @@ public class DataBaseConfigTest
 		try
 		{
 			assertEquals(expectedConnectionClosedState, testConnection.isClosed());
+			testConnection.close();
 		}
 		catch (SQLException e)
 		{
@@ -147,6 +149,9 @@ public class DataBaseConfigTest
 		try
 		{
 			assertEquals(expectedStatementCloseState, testStatement.isClosed());
+
+			testConnection.close();
+			testStatement.close();
 		}
 		catch (SQLException e)
 		{
@@ -191,6 +196,10 @@ public class DataBaseConfigTest
 		try
 		{
 			assertEquals(expectedResultSetCloseState, testResults.isClosed());
+
+			testConnection.close();
+			testStatement.close();
+			testResults.close();
 		}
 		catch (SQLException e)
 		{
