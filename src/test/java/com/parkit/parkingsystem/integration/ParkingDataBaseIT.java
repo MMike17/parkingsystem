@@ -23,6 +23,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+/**
+ * Class used to test interactions between DAO objects and DataBaseConfig
+ * 
+ * @see com.parkit.parkingsystem.dao.ParkingSpotDAO
+ * @see com.parkit.parkingsystem.dao.TicketDAO
+ * @see com.parkit.parkingsystem.config.DataBaseConfig
+ * @author Mike Matthews
+ */
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
 
@@ -64,6 +72,12 @@ public class ParkingDataBaseIT {
 		
     }
 
+	/**
+	 * Tests ParkingService.processIncomingVehicle for ParkingType.CAR
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processIncomingVehicle()
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
     public void testParkingACar()
 	{
@@ -81,6 +95,14 @@ public class ParkingDataBaseIT {
 		assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
     }
 
+	/**
+	 * Tests ParkingService.processExitingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processExitingVehicle()
+	 * @see com.parkit.parkingsystem.service.ParkingService#getNextParkingNumberIfAvailable()
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.dao.TicketDAO#saveTicket(Ticket)
+	 */
     @Test
 	public void testParkingLotExit()
 	{
