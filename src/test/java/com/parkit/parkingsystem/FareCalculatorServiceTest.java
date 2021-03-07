@@ -13,6 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 
+/**
+ * Class used to unit test FareCalculatorService
+ * 
+ * @see com.parkit.parkingsystem.service.FareCalculatorService
+ * @author Mike Matthews
+ */
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
@@ -28,6 +34,14 @@ public class FareCalculatorServiceTest {
         ticket = new Ticket();
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for one hour car parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.constants.Fare#CAR_RATE_PER_HOUR
+	 */
     @Test
     public void calculateFareCar(){
         Date inTime = new Date();
@@ -42,6 +56,14 @@ public class FareCalculatorServiceTest {
         assertEquals(ticket.getPrice(), Fare.CAR_RATE_PER_HOUR);
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for one hour bike parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.constants.Fare#BIKE_RATE_PER_HOUR
+	 */
     @Test
     public void calculateFareBike(){
         Date inTime = new Date();
@@ -56,6 +78,13 @@ public class FareCalculatorServiceTest {
         assertEquals(ticket.getPrice(), Fare.BIKE_RATE_PER_HOUR);
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for unknown type
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
     public void calculateFareUnkownType(){
         Date inTime = new Date();
@@ -69,6 +98,13 @@ public class FareCalculatorServiceTest {
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for minus one hour bike parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
     public void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
@@ -82,6 +118,13 @@ public class FareCalculatorServiceTest {
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for less than one hour bike parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
     public void calculateFareBikeWithLessThanOneHourParkingTime(){
         Date inTime = new Date();
@@ -96,6 +139,13 @@ public class FareCalculatorServiceTest {
         assertEquals(Double.parseDouble("0.75"), ticket.getPrice());
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for less than one hour car parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
     public void calculateFareCarWithLessThanOneHourParkingTime(){
         Date inTime = new Date();
@@ -110,6 +160,14 @@ public class FareCalculatorServiceTest {
         assertEquals(Double.parseDouble("1.12") , ticket.getPrice());
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for more than one day car parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.constants.Fare#CAR_RATE_PER_HOUR
+	 */
     @Test
     public void calculateFareCarWithMoreThanADayParkingTime(){
         Date inTime = new Date();

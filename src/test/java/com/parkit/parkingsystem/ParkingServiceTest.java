@@ -20,6 +20,12 @@ import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * Class used to unit test ParkingService
+ * 
+ * @see com.parkit.parkingsystem.service.ParkingService
+ * @author Mike Matthews
+ */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class ParkingServiceTest {
@@ -58,6 +64,11 @@ public class ParkingServiceTest {
         }
     }
 
+	/**
+	 * Tests ParkingService.getNextparkingNumberIfAvailable
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#getNextParkingNumberIfAvailable()
+	 */
 	@Test
 	public void getNextParkingNumberIfAvailableTest()
 	{
@@ -69,6 +80,11 @@ public class ParkingServiceTest {
 		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(any(ParkingType.class));
 	}
 
+	/**
+	 * Tests ParkingService.processIncomingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processIncomingVehicle()
+	 */
 	@Test
 	public void processIncomingVehicleTest()
 	{
@@ -81,6 +97,11 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
 	}
 
+	/**
+	 * Tests ParkingService.processExitingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processExitingVehicle()
+	 */
     @Test
     public void processExitingVehicleTest(){
         parkingService.processExitingVehicle();
