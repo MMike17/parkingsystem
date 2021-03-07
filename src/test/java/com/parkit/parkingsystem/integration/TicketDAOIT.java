@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -23,12 +23,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class used to unit test TicketDAO
+ * Class used to test TicketDAO integration
  * 
  * @see com.parkit.parkingsystem.dao.TicketDAO
  * @author Mike Matthews
  */
-public class TicketDAOTest
+public class TicketDAOIT
 {
 	static TicketDAO testTicketDAO = new TicketDAO();
 	static DataBaseTestConfig testDataBase = new DataBaseTestConfig();

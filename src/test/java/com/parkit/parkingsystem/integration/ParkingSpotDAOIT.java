@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -14,12 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class used to unit test ParkingSpotDAO
+ * Class used to test ParkingSpotDAO integration
  * 
  * @see com.parkit.parkingsystem.dao.ParkingSpotDAO
  * @author Mike Matthews
  */
-public class ParkingSpotDAOTest
+public class ParkingSpotDAOIT
 {
 	static DataBaseTestConfig testDataBase = new DataBaseTestConfig();
 	static ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();

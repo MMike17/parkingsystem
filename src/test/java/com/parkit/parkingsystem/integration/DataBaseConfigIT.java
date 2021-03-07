@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -14,12 +14,12 @@ import com.parkit.parkingsystem.config.DataBaseConfig;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class used to unit test DataBaseConfig
+ * Class used to test DataBaseConfig integration
  * 
  * @see com.parkit.parkingsystem.config.DataBaseConfig
  * @author Mike Matthews
  */
-public class DataBaseConfigTest
+public class DataBaseConfigIT
 {
 	static DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
