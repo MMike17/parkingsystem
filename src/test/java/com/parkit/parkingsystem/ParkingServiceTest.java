@@ -8,6 +8,8 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,8 +22,15 @@ import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * Class used to unit test ParkingService
+ * 
+ * @see com.parkit.parkingsystem.service.ParkingService
+ * @author Mike Matthews
+ */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@DisplayName("ParkingService")
 public class ParkingServiceTest {
 
     private static ParkingService parkingService;
@@ -58,7 +67,13 @@ public class ParkingServiceTest {
         }
     }
 
+	/**
+	 * Tests ParkingService.getNextparkingNumberIfAvailable
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#getNextParkingNumberIfAvailable()
+	 */
 	@Test
+	@Tag("Get next available parking number")
 	public void getNextParkingNumberIfAvailableTest()
 	{
 		// GIVEN
@@ -69,7 +84,13 @@ public class ParkingServiceTest {
 		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(any(ParkingType.class));
 	}
 
+	/**
+	 * Tests ParkingService.processIncomingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processIncomingVehicle()
+	 */
 	@Test
+	@Tag("Process incoming vehicle")
 	public void processIncomingVehicleTest()
 	{
 		// GIVEN
@@ -81,7 +102,13 @@ public class ParkingServiceTest {
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
 	}
 
+	/**
+	 * Tests ParkingService.processExitingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processExitingVehicle()
+	 */
     @Test
+	@Tag("Process exiting vehicle")
     public void processExitingVehicleTest(){
         parkingService.processExitingVehicle();
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));

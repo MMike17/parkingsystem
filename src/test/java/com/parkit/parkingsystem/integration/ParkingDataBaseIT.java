@@ -12,6 +12,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -23,6 +25,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+/**
+ * Class used to test interactions between DAO objects and DataBaseConfig
+ * 
+ * @see com.parkit.parkingsystem.dao.ParkingSpotDAO
+ * @see com.parkit.parkingsystem.dao.TicketDAO
+ * @see com.parkit.parkingsystem.config.DataBaseConfig
+ * @author Mike Matthews
+ */
+@DisplayName("Parking DataBase")
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
 
@@ -64,7 +75,14 @@ public class ParkingDataBaseIT {
 		
     }
 
+	/**
+	 * Tests ParkingService.processIncomingVehicle for ParkingType.CAR
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processIncomingVehicle()
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
     @Test
+	@Tag("Parking a car")
     public void testParkingACar()
 	{
 		// GIVEN
@@ -81,7 +99,16 @@ public class ParkingDataBaseIT {
 		assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
     }
 
+	/**
+	 * Tests ParkingService.processExitingVehicle
+	 * 
+	 * @see com.parkit.parkingsystem.service.ParkingService#processExitingVehicle()
+	 * @see com.parkit.parkingsystem.service.ParkingService#getNextParkingNumberIfAvailable()
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.dao.TicketDAO#saveTicket(Ticket)
+	 */
     @Test
+	@Tag("Exiting a car")
 	public void testParkingLotExit()
 	{
 		// GIVEN

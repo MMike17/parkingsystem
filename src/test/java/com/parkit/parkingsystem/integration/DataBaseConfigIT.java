@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -11,15 +11,18 @@ import java.sql.SQLException;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class used to unit test DataBaseConfig
+ * Class used to test DataBaseConfig integration
  * 
  * @see com.parkit.parkingsystem.config.DataBaseConfig
  * @author Mike Matthews
  */
-public class DataBaseConfigTest
+@DisplayName("DataBaseConfig")
+public class DataBaseConfigIT
 {
 	static DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
@@ -29,6 +32,7 @@ public class DataBaseConfigTest
 	 * @see com.parkit.parkingsystem.config.DataBaseConfig#getConnection()
 	 */
 	@Test
+	@Tag("Get connection to database")
 	public void testGetConnection()
 	{
 		// GIVEN
@@ -77,6 +81,7 @@ public class DataBaseConfigTest
 	 * @see java.sql.Connection
 	 */
 	@Test
+	@Tag("Close connection to database")
 	public void testCloseConnection()
 	{
 		// GIVEN
@@ -121,6 +126,7 @@ public class DataBaseConfigTest
 	 * @see java.sql.PreparedStatement
 	 */
 	@Test
+	@Tag("Close SQL prepared statement")
 	public void testClosePreparedStatement()
 	{
 		// GIVEN
@@ -166,6 +172,7 @@ public class DataBaseConfigTest
 	 * @see java.sql.ResultSet
 	 */
 	@Test
+	@Tag("Close SQL result set")
 	public void testCloseResultSet()
 	{
 		// GIVEN

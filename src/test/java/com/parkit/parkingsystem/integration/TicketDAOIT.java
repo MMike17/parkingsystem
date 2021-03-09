@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -20,15 +20,18 @@ import com.parkit.parkingsystem.model.Ticket;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class used to unit test TicketDAO
+ * Class used to test TicketDAO integration
  * 
  * @see com.parkit.parkingsystem.dao.TicketDAO
  * @author Mike Matthews
  */
-public class TicketDAOTest
+@DisplayName("TicketDAO")
+public class TicketDAOIT
 {
 	static TicketDAO testTicketDAO = new TicketDAO();
 	static DataBaseTestConfig testDataBase = new DataBaseTestConfig();
@@ -59,6 +62,7 @@ public class TicketDAOTest
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
 	@Test
+	@Tag("Save ticket in databaase")
 	public void testSaveTicket()
 	{
 		// GIVEN
@@ -96,6 +100,7 @@ public class TicketDAOTest
 	 * @see com.parkit.parkingsystem.model.Ticket#getVehicleRegNumber()
 	 */
 	@Test
+	@Tag("Get ticket from database")
 	public void testGetTicket()
 	{
 		// GIVEN
@@ -118,6 +123,7 @@ public class TicketDAOTest
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
 	@Test
+	@Tag("Update ticket in databaase")
 	public void testUpdateTicket()
 	{
 		// GIVEN
