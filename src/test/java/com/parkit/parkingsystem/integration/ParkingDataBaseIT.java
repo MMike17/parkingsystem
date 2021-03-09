@@ -12,6 +12,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -31,6 +33,7 @@ import java.util.Date;
  * @see com.parkit.parkingsystem.config.DataBaseConfig
  * @author Mike Matthews
  */
+@DisplayName("Parking DataBase")
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
 
@@ -79,6 +82,7 @@ public class ParkingDataBaseIT {
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
     @Test
+	@Tag("Parking a car")
     public void testParkingACar()
 	{
 		// GIVEN
@@ -104,6 +108,7 @@ public class ParkingDataBaseIT {
 	 * @see com.parkit.parkingsystem.dao.TicketDAO#saveTicket(Ticket)
 	 */
     @Test
+	@Tag("Exiting a car")
 	public void testParkingLotExit()
 	{
 		// GIVEN

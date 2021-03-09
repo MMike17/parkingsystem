@@ -11,6 +11,8 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.Test;
  * @see com.parkit.parkingsystem.dao.ParkingSpotDAO
  * @author Mike Matthews
  */
+@DisplayName("ParkingSpotDAO")
 public class ParkingSpotDAOIT
 {
 	static DataBaseTestConfig testDataBase = new DataBaseTestConfig();
@@ -44,6 +47,7 @@ public class ParkingSpotDAOIT
 	 * @see com.parkit.parkingsystem.constants.ParkingType
 	 */
 	@Test
+	@Tag("Get next available parking slot for cars")
 	public void testNextAvailableParkingSpotForCar()
 	{
 		// GIVEN
@@ -63,6 +67,7 @@ public class ParkingSpotDAOIT
 	 * @see com.parkit.parkingsystem.constants.ParkingType
 	 */
 	@Test
+	@Tag("Get next available parking slot for bikes")
 	public void testNextAvailableParkingSpotForBike()
 	{
 		// GIVEN
@@ -81,6 +86,7 @@ public class ParkingSpotDAOIT
 	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
 	 */
 	@Test
+	@Tag("Update parking slot for cars")
 	public void testParkingUpdateForCar()
 	{
 		// GIVEN
@@ -102,6 +108,7 @@ public class ParkingSpotDAOIT
 	 * @see com.parkit.parkingsystem.dao.ParkingSpotDAO#updateParking(com.parkit.parkingsystem.model.ParkingSpot)
 	 */
 	@Test
+	@Tag("Update parking slot for bikes")
 	public void testParkingUpdateForBike()
 	{
 		// GIVEN

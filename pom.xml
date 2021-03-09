@@ -64,7 +64,7 @@
 		<dependency>
     		<groupId>com.github.spotbugs</groupId>
     		<artifactId>spotbugs</artifactId>
-    		<version>4.2.1</version>
+    		<version>4.2.0</version>
     		<type>pom</type>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
@@ -162,7 +162,7 @@
 			<plugin>
         		<groupId>com.github.spotbugs</groupId>
         		<artifactId>spotbugs-maven-plugin</artifactId>
-        		<version>4.2.1</version>
+        		<version>4.2.0</version>
 				<executions>
 					<execution>
 						<id>spotbugs-report</id>

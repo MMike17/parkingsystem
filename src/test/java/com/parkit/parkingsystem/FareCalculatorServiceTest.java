@@ -7,6 +7,8 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +21,7 @@ import java.util.Date;
  * @see com.parkit.parkingsystem.service.FareCalculatorService
  * @author Mike Matthews
  */
+@DisplayName("FareCalculatorService")
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
@@ -43,6 +46,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.constants.Fare#CAR_RATE_PER_HOUR
 	 */
     @Test
+	@Tag("Calculate fare for 1h of car parking")
     public void calculateFareCar(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
@@ -65,6 +69,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.constants.Fare#BIKE_RATE_PER_HOUR
 	 */
     @Test
+	@Tag("Calculate fare for 1h of bike parking")
     public void calculateFareBike(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
@@ -86,6 +91,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
     @Test
+	@Tag("Calculate fare for unknown type")
     public void calculateFareUnkownType(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
@@ -106,6 +112,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
     @Test
+	@Tag("Calculate fare for -1h of car parking")
     public void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() + (  60 * 60 * 1000) );
@@ -126,6 +133,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
     @Test
+	@Tag("Calculate fare for less than an hour of bike parking")
     public void calculateFareBikeWithLessThanOneHourParkingTime(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  45 * 60 * 1000) );//45 minutes parking time should give 3/4th parking fare
@@ -147,6 +155,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
     @Test
+	@Tag("Calculate fare for less than an hour of car parking")
     public void calculateFareCarWithLessThanOneHourParkingTime(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  45 * 60 * 1000) );//45 minutes parking time should give 3/4th parking fare
@@ -169,6 +178,7 @@ public class FareCalculatorServiceTest {
 	 * @see com.parkit.parkingsystem.constants.Fare#CAR_RATE_PER_HOUR
 	 */
     @Test
+	@Tag("Calculate fare for more than one day of car parking")
     public void calculateFareCarWithMoreThanADayParkingTime(){
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000) );//24 hours parking time should give 24 * parking fare per hour

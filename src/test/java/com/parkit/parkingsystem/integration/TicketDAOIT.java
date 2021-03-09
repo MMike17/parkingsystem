@@ -20,6 +20,8 @@ import com.parkit.parkingsystem.model.Ticket;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,6 +30,7 @@ import org.junit.jupiter.api.Test;
  * @see com.parkit.parkingsystem.dao.TicketDAO
  * @author Mike Matthews
  */
+@DisplayName("TicketDAO")
 public class TicketDAOIT
 {
 	static TicketDAO testTicketDAO = new TicketDAO();
@@ -59,6 +62,7 @@ public class TicketDAOIT
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
 	@Test
+	@Tag("Save ticket in databaase")
 	public void testSaveTicket()
 	{
 		// GIVEN
@@ -96,6 +100,7 @@ public class TicketDAOIT
 	 * @see com.parkit.parkingsystem.model.Ticket#getVehicleRegNumber()
 	 */
 	@Test
+	@Tag("Get ticket from database")
 	public void testGetTicket()
 	{
 		// GIVEN
@@ -118,6 +123,7 @@ public class TicketDAOIT
 	 * @see com.parkit.parkingsystem.model.Ticket
 	 */
 	@Test
+	@Tag("Update ticket in databaase")
 	public void testUpdateTicket()
 	{
 		// GIVEN
