@@ -1,12 +1,8 @@
 package com.parkit.parkingsystem;
 
-import com.parkit.parkingsystem.constants.Fare;
-import com.parkit.parkingsystem.constants.ParkingType;
-import com.parkit.parkingsystem.model.ParkingSpot;
-import com.parkit.parkingsystem.model.Ticket;
-import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -14,6 +10,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
+
+import com.parkit.parkingsystem.constants.Fare;
+import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.model.ParkingSpot;
+import com.parkit.parkingsystem.model.Ticket;
+import com.parkit.parkingsystem.service.FareCalculatorService;
 
 /**
  * Class used to unit test FareCalculatorService
@@ -168,6 +170,35 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals(Double.parseDouble("1.12") , ticket.getPrice());
     }
+
+	/**
+	 * Tests FareCalculatorService.calculateFare for less than half an hour car parking
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 */
+	@Test
+	@Tag("Calculate fare for less than half an hour of car parking")
+	@Disabled
+	public void calculateFareCarWithLessThenHalfAnHourParkingTime()
+	{
+		// GIVEN
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (25 * 60 * 1000)); // 25 min parking time should return free
+		Date outTime = new Date();
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+		ticket.setInTime(inTime);
+		ticket.setOutTime(outTime);
+		ticket.setParkingSpot(parkingSpot);
+
+		// WHEN
+		fareCalculatorService.calculateFare(ticket);
+
+		// THEN
+		assertEquals(0, ticket.getPrice());
+	}
 
 	/**
 	 * Tests FareCalculatorService.calculateFare for more than one day car parking
