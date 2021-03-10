@@ -180,7 +180,6 @@ public class FareCalculatorServiceTest {
 	 */
 	@Test
 	@Tag("Calculate fare for less than half an hour of car parking")
-	@Disabled
 	public void calculateFareCarWithLessThenHalfAnHourParkingTime()
 	{
 		// GIVEN
