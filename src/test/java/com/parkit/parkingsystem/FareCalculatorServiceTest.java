@@ -2,7 +2,6 @@ package com.parkit.parkingsystem;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -222,4 +221,32 @@ public class FareCalculatorServiceTest {
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
 
+	/**
+	 * Tests FareCalculatorService.calculateFare for recurent user
+	 * 
+	 * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+	 * @see com.parkit.parkingsystem.model.ParkingSpot
+	 * @see com.parkit.parkingsystem.model.Ticket
+	 * @see com.parkit.parkingsystem.constants.Fare#CAR_RATE_PER_HOUR
+	 */
+	@Test
+	@Tag("Calculate fare for recurent user")
+	public void calculateFareRecurentCar ()
+	{
+		// GIVEN
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (3 * 60 * 60 * 1000));
+		Date outTime = new Date();
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+		ticket.setInTime(inTime);
+		ticket.setOutTime(outTime);
+		ticket.setParkingSpot(parkingSpot);
+
+		// WHEN
+		// fareCalculatorService.calculateFare(ticket, true);
+
+		// THEN
+		// assertEquals(Double.parseDouble("4.27"), ticket.getPrice());
+	}
 }
