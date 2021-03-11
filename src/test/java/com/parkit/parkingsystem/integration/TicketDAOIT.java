@@ -146,6 +146,37 @@ public class TicketDAOIT
 		assertEquals(testTicketDAO.getTicket(testVehicleRegNumber).getPrice(), testTicket.getPrice());
 	}
 
+	/**
+	 * Tests TicketDAO.getVehicleOccurence
+	 * 
+	 * @see com.parkit.parkingsystem.dao.TicketDAO#getVehicleOccurence(String)
+	 */
+	@Test
+	@Tag("Count vehicle occurences in database")
+	public void testOccurencesCount() {
+		// GIVEN
+		final String vehicleRegNumber = "TEST";
+		int ticketCount = 0, targetCount = 4;
+
+		while (ticketCount < targetCount) {
+			ticketCount++;
+
+			Ticket testData = new Ticket();
+			testData.setVehicleRegNumber(vehicleRegNumber);
+			testData.setInTime(new Date(System.currentTimeMillis() - (10 * 60 * 1000) * (ticketCount + 1)));
+			testData.setOutTime(new Date());
+			testData.setParkingSpot(new ParkingSpot(ticketCount + 1, ParkingType.CAR, false));
+
+			prepareDataBaseService.insertTestTicket(testData);
+		}
+
+		// WHEN
+		int occurences = testTicketDAO.getVehicleOccurence(vehicleRegNumber);
+
+		// THEN
+		assertEquals(targetCount, occurences);
+	}
+
 	Ticket generateTestTicket(String vehicleRegNumber)
 	{
 		Ticket testTicket = new Ticket();

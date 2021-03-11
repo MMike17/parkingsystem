@@ -9,7 +9,8 @@ public class FareCalculatorService {
 
 	double freeMilThreshold = 30 * 60 * 1000;
 
-    public void calculateFare(Ticket ticket){
+    public void calculateFare(Ticket ticket, boolean isRecurent)
+	{
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
@@ -27,22 +28,33 @@ public class FareCalculatorService {
 			return;
 		}
 
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                ticket.setPrice(computeFare(duration, Fare.CAR_RATE_PER_HOUR));
+		double selectedFare = 0;
+
+		switch (ticket.getParkingSpot().getParkingType())
+		{
+            case CAR:
+				selectedFare = Fare.CAR_RATE_PER_HOUR;
                 break;
-            }
-            case BIKE: {
-                ticket.setPrice(computeFare(duration, Fare.BIKE_RATE_PER_HOUR));
+
+            case BIKE:
+				selectedFare = Fare.BIKE_RATE_PER_HOUR;
                 break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
+
+            default:
+				throw new IllegalArgumentException("Unkown Parking Type");
         }
+
+		ticket.setPrice(computeFare(duration, selectedFare, isRecurent));
     }
 
-	double computeFare (float duration, double rate)
+	double computeFare (float duration, double rate, boolean isRecurent)
 	{
 		double fare = duration * rate;
+
+		// recurent user discount
+		if(isRecurent)
+			fare -= (fare / 100 * 5);
+
 		int fareConversion = (int) (fare * 100);
 		BigDecimal computedFare = new BigDecimal(Integer.toString(fareConversion));
 		computedFare = computedFare.divide(new BigDecimal("100.00"));
