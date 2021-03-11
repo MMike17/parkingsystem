@@ -7,6 +7,8 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
+	double freeMilThreshold = 30 * 60 * 1000;
+
     public void calculateFare(Ticket ticket){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
@@ -17,6 +19,13 @@ public class FareCalculatorService {
 
 		// miliseconds =(/1000)> seconds =(/60)> minutes =(/60)> hours 
 		float duration = (float) (outMiliseconds - inMiliseconds) / 1000 / 60 / 60;
+
+		// less than 30 minutes parking time is free
+		if((outMiliseconds - inMiliseconds) <= freeMilThreshold)
+		{
+			ticket.setPrice(0);
+			return;
+		}
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
