@@ -168,7 +168,7 @@
 						<id>spotbugs-report</id>
 						<phase>test</phase>
 						<goals>
-							<goal>report</goal>
+							<goal>spotbugs</goal>
 						</goals>
 					</execution>
 				</executions>
