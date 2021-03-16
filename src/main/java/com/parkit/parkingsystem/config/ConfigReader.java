@@ -1,21 +1,22 @@
 package com.parkit.parkingsystem.config;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Class used to read infos from .config file
+ * Class used to read infos from .conf file
  * 
  * @see com.parkit.parkingsystem.config.DataBaseConfig
  * @author MikeMatthews
  */
 public class ConfigReader
 {
-	final String configFilePath = "../../resources/config.config";
+	final String configFilePath = "src/main/resources/config.conf";
 	final String userJSONKey = "user";
 	final String passwordJSONKey = "password";
 
@@ -23,19 +24,19 @@ public class ConfigReader
 	String password = null;
 
 	/**
-	 * Caches infos from .config file
+	 * Caches infos from .conf file
 	 */
 	public ConfigReader()
 	{
 		JSONParser parser = new JSONParser();
 
-		try
+		try(FileReader reader = new FileReader(configFilePath))
 		{
-			Object fileContent = parser.parse(new FileReader(configFilePath));
+			Object fileContent = parser.parse(reader);
 			JSONObject jsonObject = (JSONObject) fileContent;
 
-			userName = jsonObject.getString(userJSONKey);
-			password = jsonObject.getString(passwordJSONKey);
+			userName = (String) jsonObject.get(userJSONKey);
+			password = (String) jsonObject.get(passwordJSONKey);
 		}
 		catch(IOException | ParseException exception)
 		{

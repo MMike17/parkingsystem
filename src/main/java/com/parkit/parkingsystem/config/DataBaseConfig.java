@@ -9,11 +9,27 @@ public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
 
+	String userName = null;
+	String password = null;
+
+	/**
+	 * Initialises DataBaseConfig and reads infos from ConfigReader
+	 * 
+	 * @see com.parkit.parkingsystem.config.ConfigReader
+	 */
+	public DataBaseConfig ()
+	{
+		ConfigReader configReader = new ConfigReader();
+
+		userName = configReader.getUserName();
+		password = configReader.getPassword();
+	} 
+
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prod?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC","root","rootroot");
+                "jdbc:mysql://localhost:3306/prod?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC",userName, password);
     }
 
     public void closeConnection(Connection con){
