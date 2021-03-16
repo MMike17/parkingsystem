@@ -21,7 +21,7 @@ public class ParkingService {
     private ParkingSpotDAO parkingSpotDAO;
     private TicketDAO ticketDAO;
 
-	final private int recurentUserOccurencesThreshold = 2;
+	final static int recurentUserOccurencesThreshold = 2;
 
     public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO){
         this.inputReaderUtil = inputReaderUtil;
