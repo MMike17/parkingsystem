@@ -43,16 +43,24 @@ public class Ticket {
         this.price = price;
     }
 
-    public Date getInTime() {
-        return (Date) inTime.clone();
+    public Date getInTime()
+	{
+		if(inTime != null)
+        	return (Date) inTime.clone();
+		else
+			return null;
     }
 
     public void setInTime(Date inTime) {
         this.inTime = inTime;
     }
 
-    public Date getOutTime() {
-        return (Date) outTime.clone();
+    public Date getOutTime()
+	{
+		if(outTime != null)
+        	return (Date) outTime.clone();
+		else
+			return null;
     }
 
     public void setOutTime(Date outTime) {
