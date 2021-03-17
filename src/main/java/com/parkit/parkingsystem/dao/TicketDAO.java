@@ -91,20 +91,19 @@ public class TicketDAO {
 	public int getVehicleOccurence (String vehicleRegNumber)
 	{
 		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int occurences = 0;
 
 		try
 		{
 			con = dataBaseConfig.getConnection();
-			PreparedStatement ps = con.prepareStatement(DBConstants.GET_VEHICLE_OCCURENCES);
+			ps = con.prepareStatement(DBConstants.GET_VEHICLE_OCCURENCES);
 			ps.setString(1, vehicleRegNumber);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 
 			if(rs.next())
 				occurences = rs.getInt(1);
-
-			dataBaseConfig.closeResultSet(rs);
-			dataBaseConfig.closePreparedStatement(ps);
 		}
 		catch(Exception ex)
 		{
@@ -113,6 +112,9 @@ public class TicketDAO {
 		finally
 		{
 			dataBaseConfig.closeConnection(con);
+			dataBaseConfig.closePreparedStatement(ps);
+			dataBaseConfig.closeResultSet(rs);
+			
 			return occurences;
 		}
 	}
