@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
@@ -96,7 +97,10 @@ public class ParkingDataBaseIT {
 		Ticket ticket = getTicketWithRegistrationNumber();
 
 		int parkingSpot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
-		assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
+		assertNotNull(ticket);
+
+		if(ticket != null)
+			assertNotEquals(ticket.getParkingSpot().getId(), parkingSpot);
     }
 
 	/**
@@ -139,7 +143,7 @@ public class ParkingDataBaseIT {
 		// THEN
 		Ticket ticket = getTicketWithRegistrationNumber();
 
-		assertNotEquals(ticket.getOutTime(), null);
+		assertNotNull(ticket.getOutTime());
 		assertNotEquals(ticket.getPrice(), 0);
 	}
 

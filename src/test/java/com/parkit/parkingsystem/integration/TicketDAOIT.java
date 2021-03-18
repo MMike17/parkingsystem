@@ -67,6 +67,11 @@ public class TicketDAOIT
 	{
 		// GIVEN
 		String testVehicleRegNumber = "SAVETEST";
+
+		Connection testConnection = null;
+		PreparedStatement testStatement = null;
+		ResultSet testResults = null;
+
 		Ticket testTicket = generateTestTicket(testVehicleRegNumber);
 		boolean expectedRowState = true;
 
@@ -76,11 +81,11 @@ public class TicketDAOIT
 		// THEN
 		try
 		{
-			Connection testConnection = testDataBase.getConnection();
-			PreparedStatement testStatement = testConnection.prepareStatement("Select * from ticket where VEHICLE_REG_NUMBER=?");
+			testConnection = testDataBase.getConnection();
+			testStatement = testConnection.prepareStatement("Select * from ticket where VEHICLE_REG_NUMBER=?");
 			testStatement.setString(1, testVehicleRegNumber);
 
-			ResultSet testResults = testStatement.executeQuery();
+			testResults = testStatement.executeQuery();
 			assertEquals(expectedRowState, testResults.next());
 		}
 		catch (ClassNotFoundException e)
@@ -90,6 +95,12 @@ public class TicketDAOIT
 		catch (SQLException e)
 		{
 			System.out.println(e);
+		}
+		finally
+		{
+			testDataBase.closeConnection(testConnection);
+			testDataBase.closePreparedStatement(testStatement);
+			testDataBase.closeResultSet(testResults);
 		}
 	}
 
